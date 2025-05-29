@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Slam Book 🍓💖</title>
+    <link rel="icon" href="https://www.w3.org/2000/svg-icon" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', serif;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+            background-color: #f5e9c6;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .book-container {
+            background-image: url('https://www.transparenttextures.com/patterns/leather.png');
+            width: min(90vw, 1200px);
+            min-height: 80vh;
+            max-height: 90vh;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            border-radius: 10px;
+            background-color: #e5d4a8;
+            overflow: hidden;
+            animation: openBook 1s ease-in-out;
+        }
+        @keyframes openBook {
+            from { transform: perspective(1000px) rotateY(-10deg); }
+            to { transform: perspective(1000px) rotateY(0deg); }
+        }
+        .left-page, .right-page {
+            width: 50%;
+            padding: 20px;
+            background-color: #fff8e7;
+            border: 1px solid #ccc;
+            overflow-y: auto;
+            max-height: 90vh;
+            min-height: 400px;
+            position: relative;
+            transition: transform 0.5s ease;
+            scrollbar-width: thin;
+            scrollbar-color: #8B0000 #fff8e7;
+        }
+        .left-page {
+            border-right: none;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .right-page {
+            border-left: none;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .main-content {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            margin: 1rem 0;
+            border: 2px solid #8B0000;
+        }
+        h1 {
+            color: #8B0000;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea, select, button {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border: 2px solid #8B0000;
+            border-radius: 6px;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+            min-height: 44px;
+        }
+        button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover, button:focus {
+            background-color: #A52A2A;
+            transform: scale(1.05);
+            outline: none;
+        }
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .nav-button {
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+        .hidden {
+            display: none;
+        }
+        #heartAnimation {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: #FF4500;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+        #photoFrame, #profilePic {
+            margin: 1rem auto;
+            width: clamp(120px, 30vw, 150px);
+            height: clamp(120px, 30vw, 150px);
+            border: 4px solid #8B0000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #photoFrame img, #profilePic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .entry, .diary-entry {
+            background-color: #FFEFD5;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            border-left: 4px solid #8B0000;
+        }
+        .diary-entry {
+            background-image: linear-gradient(#fff8e7 1px, transparent 1px);
+            background-size: 100% 2rem;
+            line-height: 2rem;
+        }
+        .comments {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #A52A2A;
+        }
+        .comment {
+            background-color: #FFF0F5;
+            padding: 0.5rem;
+            margin: 0.3rem 0;
+            border-radius: 4px;
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+        #recentActivity {
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            background-color: #FFEFD5;
+            border-radius: 6px;
+            max-height: 150px;
+            overflow-y: auto;
+            width: 100%;
+        }
+        .error {
+            color: #FF4500;
+            margin-top: 0.5rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
+        }
+        .prompt-select, .mood-select {
+            margin-bottom: 0.5rem;
+        }
+        .mood-button {
+            display: inline-block;
+            padding: 0.5rem;
+            margin: 0.2rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: 2px solid #8B0000;
+            border-radius: 6px;
+        }
+        .mood-button.selected {
+            background-color: #A52A2A;
+            color: white;
+        }
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #8B0000;
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        @keyframes strawberryFall {
+            0% { transform: translateY(-50px); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0.5; }
+        }
+        .custom-prompt-section {
+            margin: 1rem 0;
+            width: 100%;
+        }
+        .custom-prompt-section input {
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .book-container {
+                flex-direction: column;
+                width: 95vw;
+                max-height: none;
+                min-height: auto;
+            }
+            .left-page, .right-page {
+                width: 100%;
+                max-height: none;
+                min-height: 50vh;
+                border-radius: 0;
+                border: 1px solid #ccc;
+            }
+            .left-page {
+                border-bottom: none;
+            }
+            .right-page {
+                border-top: none;
+            }
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+            }
+            h1 {
+                font-size: 1.2rem;
+            }
+            button, input, textarea, select {
+                font-size: 0.9rem;
+            }
+            .nav-button {
+                min-width: 100px;
+                font-size: 0.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            .book-container {
+                width: 100vw;
+            }
+            #photoFrame, #profilePic {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="heartAnimation">💖</div>
+    <div id="toast"></div>
+    <div class="book-container">
+        <div class="left-page">
+            <div class="main-content">
+                <!-- Login Page -->
+                <div id="loginPage" class="container">
+                    <h1>Our Love Slam Book 🍓💖</h1>
+                    <p>Hey love, let’s fill our diary with memories! 🥰</p>
+                    <div id="photoFrame">
+                        <img src="2.jpg" alt="Photo of Us">
+                    </div>
+                    <input type="text" id="username" placeholder="Your Name (e.g., Sanaya)">
+                    <input type="password" id="password" placeholder="Password">
+                    <button id="loginButton">Open Our Slam Book</button>
+                </div>
+
+                <!-- Dashboard -->
+                <div id="dashboard" class="container hidden">
+                    <h1>Welcome, <span id="nameDisplay">Love</span>! 🍓</h1>
+                    <div id="profilePic">
+                        <img id="profileImg" src="2.jpg">
+                    </div>
+                    <div class="custom-prompt-section">
+                        <input type="text" id="customPrompt" placeholder="Add your own prompt...">
+                        <button onclick="addCustomPrompt()">Add Prompt</button>
+                        <p id="promptError" class="error hidden"></p>
+                    </div>
+                    <div id="recentActivity">
+                        <p>Recent Activity:</p>
+                        <div id="activityFeed"></div>
+                    </div>
+                    <div class="nav-bar">
+                        <button class="nav-button" onclick="showDiaryForm()">Add Diary Entry</button>
+                        <button class="nav-button" onclick="showEntryForm()">Add Prompt Entry</button>
+                        <button class="nav-button" onclick="showDiary()">View Diary</button>
+                        <button class="nav-button" onclick="showEntries()">View Prompt Entries</button>
+                        <button class="nav-button" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-page">
+            <!-- Diary Form -->
+            <div id="diaryForm" class="container hidden">
+                <h1>Write in Our Diary, <span id="diaryNameDisplay">Love</span> 🍓</h1>
+                <input type="text" id="diaryTitle" placeholder="Entry Title">
+                <textarea id="diaryContent" placeholder="Your thoughts..." rows="6"></textarea>
+                <input type="file" id="diaryPhoto" accept="image/*">
+                <div class="mood-select">
+                    <p>Today’s Mood:</p>
+                    <span class="mood-button" data-mood="😊">😊 Happy</span>
+                    <span class="mood-button" data-mood="😢">😢 Sad</span>
+                    <span class="mood-button" data-mood="😍">😍 In Love</span>
+                    <span class="mood-button" data-mood="😴">😴 Tired</span>
+                </div>
+                <button onclick="submitDiary()">Save Diary Entry</button>
+                <button onclick="showDashboard()">Back to Dashboard</button>
+                <p id="diaryError" class="error hidden"></p>
+            </div>
+
+            <!-- Entry Form -->
+            <div id="entryForm" class="container hidden">
+                <h1>Add to Our Slam Book, <span id="formNameDisplay">Love</span> 🍓</h1>
+                <select id="prompt" class="prompt-select">
+                    <option value="">Choose a Prompt...</option>
+                    <!-- Populated dynamically -->
+                </select>
+                <textarea id="entryAnswer" placeholder="Your answer..." rows="4"></textarea>
+                <input type="file" id="entryPhoto" accept="image/*">
+                <button onclick="submitEntry()">Save Entry</button>
+                <button onclick="showDashboard()">Back to Dashboard</button>
+                <p id="formError" class="error hidden"></p>
+            </div>
+
+            <!-- Diary View -->
+            <div id="diaryPage" class="container hidden">
+                <h1>Our Diary 📔</h1>
+                <div class="search-bar">
+                    <input type="text" id="diarySearch" placeholder="Search diary...">
+                    <select id="diarySort">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+                <div id="diaryList"></div>
+                <button onclick="showDashboard()">Back to Dashboard</button>
+            </div>
+
+            <!-- Entries Page -->
+            <div id="entriesPage" class="container hidden">
+                <h1>Our Slam Book Entries 📖</h1>
+                <div class="search-bar">
+                    <input type="text" id="entrySearch" placeholder="Search entries...">
+                    <select id="entrySort">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+                <div id="entryList"></div>
+                <button onclick="showDashboard()">Back to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        console.log('Script started at:', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }));
+
+        // Debug Events
+        window.addEventListener('scroll', () => console.log('Scroll event:', window.scrollY));
+        window.addEventListener('resize', () => console.log('Resize event:', window.innerWidth, window.innerHeight));
+
+        // Constants
+        let prompts = [
+            "Our best date?",
+            "What I love about you?",
+            "Our song?",
+            "Favorite memory together?",
+            "Dream date idea?"
+        ];
+        let entries = [];
+        let diaryEntries = [];
+        let username = null;
+        let database = null;
+        let selectedMood = null;
+
+        // Utility Functions
+        function sanitizeUsername(input) {
+            return input.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 50);
+        }
+
+        async function compressImage(file) {
+            console.log('Compressing image:', file.name);
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxWidth = 800;
+                        const maxHeight = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const base64 = canvas.toDataURL('image/jpeg', 0.7);
+                        if (base64.length > 1_000_000) {
+                            console.warn('Compressed image size:', base64.length, 'bytes');
+                            reject(new Error('Image is too large (>1MB). Use a smaller image.'));
+                        } else {
+                            resolve(base64);
+                        }
+                    };
+                    img.onerror = () => reject(new Error('Failed to load image'));
+                };
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        }
+
+        function populatePromptDropdown() {
+            const promptSelect = document.getElementById('prompt');
+            promptSelect.innerHTML = '<option value="">Choose a Prompt...</option>';
+            prompts.forEach(prompt => {
+                const option = document.createElement('option');
+                option.value = prompt;
+                option.textContent = prompt;
+                promptSelect.appendChild(option);
+            });
+        }
+
+        // Core Functions
+        async function login() {
+            console.log('Login attempted at:', new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }));
+            const inputUsername = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!inputUsername || password !== 'mydearstrawberry') {
+                document.getElementById('loginPage').innerHTML += `<p class="error">Oops! Wrong name or password. Try again, love! 🍓💕</p>`;
+                return;
+            }
+
+            try {
+                username = sanitizeUsername(inputUsername);
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('nameDisplay').textContent = username;
+                document.getElementById('formNameDisplay').textContent = username;
+                document.getElementById('diaryNameDisplay').textContent = username;
+                document.getElementById('profileImg').src = 'https://via.placeholder.com/150';
+                initDashboard();
+                loadCustomPrompts();
+                loadEntries();
+                loadDiaryEntries();
+            } catch (error) {
+                console.error('Login error:', error);
+                document.getElementById('loginPage').innerHTML += `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+
+        function logout() {
+            username = null;
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
+
+        function initDashboard() {
+            updateActivityFeed();
+            setInterval(updateActivityFeed, 10000);
+        }
+
+        function loadCustomPrompts() {
+            if (!database) {
+                console.warn('Database not available. Custom prompts cannot be loaded.');
+                populatePromptDropdown();
+                return;
+            }
+            database.ref('slamBook/customPrompts').on('value', (snapshot) => {
+                prompts = [
+                    "Our best date?",
+                    "What I love about you?",
+                    "Our song?",
+                    "Favorite memory together?",
+                    "Dream date idea?"
+                ];
+                snapshot.forEach((childSnapshot) => {
+                    const prompt = childSnapshot.val().text;
+                    if (!prompts.includes(prompt)) {
+                        prompts.push(prompt);
+                    }
+                });
+                populatePromptDropdown();
+                console.log('Custom prompts loaded:', prompts);
+            });
+        }
+
+        async function addCustomPrompt() {
+            const promptInput = document.getElementById('customPrompt').value.trim();
+            const errorEl = document.getElementById('promptError');
+
+            if (!promptInput) {
+                errorEl.textContent = 'Please enter a prompt, love! 🍓💕';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            if (prompts.includes(promptInput)) {
+                errorEl.textContent = 'This prompt already exists!';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                if (!database) {
+                    throw new Error('Database not initialized.');
+                }
+                const newPrompt = {
+                    text: promptInput,
+                    createdBy: username,
+                    createdAt: Date.now()
+                };
+                const ref = database.ref('slamBook/customPrompts');
+                const newPromptRef = ref.push();
+                await newPromptRef.set(newPrompt);
+                console.log('Custom prompt added:', newPrompt, 'Path:', `slamBook/customPrompts/${newPromptRef.key}`);
+
+                document.getElementById('customPrompt').value = '';
+                errorEl.classList.add('hidden');
+                showToast('Custom prompt added! 📖');
+            } catch (error) {
+                console.error('Add custom prompt error:', error);
+                errorEl.textContent = `Failed to add prompt: ${error.message}`;
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function loadEntries() {
+            if (!database) {
+                document.getElementById('dashboard').innerHTML += `<p class="error">Database not available. Entries cannot be loaded or saved.</p>`;
+                return;
+            }
+            database.ref('slamBook/entries').on('value', (snapshot) => {
+                entries = [];
+                snapshot.forEach((childSnapshot) => {
+                    const entry = childSnapshot.val();
+                    entry.id = childSnapshot.key;
+                    entry.comments = entry.comments || {};
+                    entries.push(entry);
+                });
+                updateEntries();
+                updateActivityFeed();
+            });
+        }
+
+        function loadDiaryEntries() {
+            if (!database) {
+                document.getElementById('dashboard').innerHTML += `<p class="error">Database not available. Diary entries cannot be loaded or saved.</p>`;
+                return;
+            }
+            database.ref('slamBook/diary').on('value', (snapshot) => {
+                console.log('Diary snapshot:', snapshot.val());
+                diaryEntries = [];
+                snapshot.forEach((childSnapshot) => {
+                    const entry = childSnapshot.val();
+                    entry.id = childSnapshot.key;
+                    diaryEntries.push(entry);
+                });
+                console.log('Diary entries loaded:', diaryEntries);
+                updateDiary();
+                updateActivityFeed();
+            }, (error) => {
+                console.error('Load diary entries error:', error);
+                showToast('Failed to load diary entries. Check console.');
+            });
+        }
+
+        function updateEntries() {
+            const searchTerm = document.getElementById('entrySearch')?.value.toLowerCase() || '';
+            const sortOrder = document.getElementById('entrySort')?.value || 'newest';
+            let filteredEntries = entries.filter(entry =>
+                entry.prompt.toLowerCase().includes(searchTerm) ||
+                entry.answer.toLowerCase().includes(searchTerm)
+            );
+            filteredEntries.sort((a, b) => sortOrder === 'newest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt);
+
+            const entryList = document.getElementById('entryList');
+            entryList.innerHTML = '';
+            if (filteredEntries.length === 0) {
+                entryList.innerHTML = '<p>No entries found.</p>';
+            }
+            filteredEntries.forEach(entry => {
+                const div = document.createElement('div');
+                div.className = 'entry';
+                div.innerHTML = `
+                    <p><strong>Prompt:</strong> ${entry.prompt}</p>
+                    <p><strong>${entry.username}'s Answer:</strong> ${entry.answer}</p>
+                    ${entry.photoUrl ? `<img src="${entry.photoUrl}" alt="Entry Photo" style="max-width: 100%;">` : ''}
+                    <p><strong>By:</strong> ${entry.username} on ${new Date(entry.createdAt).toLocaleString()}</p>
+                    ${entry.editedAt ? `<p><small>Edited: ${new Date(entry.editedAt).toLocaleString()}</small></p>` : ''}
+                    <button onclick="editEntry('${entry.id}')">Edit</button>
+                    <div class="comments">
+                        <h4>Comments:</h4>
+                        ${Object.entries(entry.comments || {}).map(([id, comment]) => `
+                            <div class="comment">
+                                <p>${comment.text} <br><small>By ${comment.username} on ${new Date(comment.createdAt).toLocaleString()}</small></p>
+                            </div>
+                        `).join('')}
+                        <textarea id="comment-${entry.id}" placeholder="Add a comment..."></textarea>
+                        <button onclick="submitComment('${entry.id}')">Comment</button>
+                    </div>
+                `;
+                entryList.appendChild(div);
+            });
+        }
+
+        function updateDiary() {
+            const searchTerm = document.getElementById('diarySearch')?.value.toLowerCase() || '';
+            const sortOrder = document.getElementById('diarySort')?.value || 'newest';
+            let filteredEntries = diaryEntries.filter(entry => {
+                const title = (entry.title || '').toString().toLowerCase();
+                const content = (entry.content || '').toString().toLowerCase();
+                return title.includes(searchTerm) || content.includes(searchTerm);
+            });
+            filteredEntries.sort((a, b) => sortOrder === 'newest' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt);
+            console.log('Filtered diary entries:', filteredEntries);
+
+            const diaryList = document.getElementById('diaryList');
+            diaryList.innerHTML = '';
+            if (filteredEntries.length === 0) {
+                diaryList.innerHTML = '<p>No diary entries found.</p>';
+            }
+            filteredEntries.forEach(entry => {
+                console.log('Rendering diary entry:', entry);
+                const div = document.createElement('div');
+                div.className = 'diary-entry';
+                div.innerHTML = `
+                    <p><strong>${entry.title || 'Untitled'}</strong></p>
+                    <p>${entry.content || 'No content'}</p>
+                    ${entry.photoUrl ? `<img src="${entry.photoUrl}" alt="Diary Photo" style="max-width: 100%;">` : ''}
+                    <p><strong>Mood:</strong> ${entry.mood || 'None'}</p>
+                    <p><strong>By:</strong> ${entry.username || 'Unknown'} on ${new Date(entry.createdAt).toLocaleString()}</p>
+                    ${entry.editedAt ? `<p><small>Edited: ${new Date(entry.editedAt).toLocaleString()}</small></p>` : ''}
+                    <button onclick="editDiary('${entry.id}')">Edit</button>
+                `;
+                diaryList.appendChild(div);
+            });
+        }
+
+        function updateActivityFeed() {
+            const feed = document.getElementById('activityFeed');
+            feed.innerHTML = '';
+            const activities = [];
+            entries.forEach(entry => {
+                activities.push({
+                    text: `${entry.username} answered "${entry.prompt}"`,
+                    time: entry.createdAt
+                });
+                Object.entries(entry.comments || {}).forEach(([id, comment]) => {
+                    activities.push({
+                        text: `${comment.username} commented on "${entry.prompt}"`,
+                        time: comment.createdAt
+                    });
+                });
+            });
+            diaryEntries.forEach(entry => {
+                activities.push({
+                    text: `${entry.username} wrote "${entry.title || 'Untitled'}" in diary`,
+                    time: entry.createdAt
+                });
+            });
+            activities.sort((a, b) => b.time - a.time);
+            activities.slice(0, 5).forEach(activity => {
+                const p = document.createElement('p');
+                p.textContent = `${activity.text} at ${new Date(activity.time).toLocaleString()}`;
+                feed.appendChild(p);
+            });
+        }
+
+        async function submitEntry() {
+            const prompt = document.getElementById('prompt').value;
+            const answer = document.getElementById('entryAnswer').value;
+            const photo = document.getElementById('entryPhoto').files[0];
+            const errorEl = document.getElementById('formError');
+
+            if (!prompt || !answer) {
+                errorEl.textContent = 'Please select a prompt and write an answer, love! 🍓💕';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                let photoUrl = null;
+                if (photo) {
+                    photoUrl = await compressImage(photo);
+                    console.log('Image compressed, length:', photoUrl.length);
+                }
+
+                const entry = {
+                    prompt,
+                    answer,
+                    photoUrl,
+                    username,
+                    createdAt: Date.now()
+                };
+
+                if (!database) {
+                    throw new Error('Database not initialized.');
+                }
+                const ref = database.ref('slamBook/entries');
+                const newEntryRef = ref.push();
+                await newEntryRef.set(entry);
+                console.log('Entry added:', entry, 'Path:', `slamBook/entries/${newEntryRef.key}`);
+
+                document.getElementById('prompt').value = '';
+                document.getElementById('entryAnswer').value = '';
+                document.getElementById('entryPhoto').value = '';
+                errorEl.classList.add('hidden');
+
+                triggerStrawberrySurprise();
+                showToast('Prompt entry saved! 📖');
+                showDashboard();
+            } catch (error) {
+                console.error('Add entry error:', error);
+                errorEl.textContent = `Failed to save entry: ${error.message}`;
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        async function submitDiary() {
+            const title = document.getElementById('diaryTitle').value.trim();
+            const content = document.getElementById('diaryContent').value.trim();
+            const photo = document.getElementById('diaryPhoto').files[0];
+            const errorEl = document.getElementById('diaryError');
+
+            if (!title || !content || !selectedMood) {
+                errorEl.textContent = 'Please add a title, content, and select a mood, love! 🍓💕';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                let photoUrl = null;
+                if (photo) {
+                    photoUrl = await compressImage(photo);
+                    console.log('Image compressed, length:', photoUrl.length);
+                }
+
+                const entry = {
+                    title: title || 'Untitled',
+                    content: content || 'No content',
+                    photoUrl,
+                    mood: selectedMood,
+                    username,
+                    createdAt: Date.now()
+                };
+
+                if (!database) {
+                    console.warn('Database not available. Saving to localStorage.');
+                    const localEntries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+                    localEntries.push({ ...entry, id: `local_${Date.now()}` });
+                    localStorage.setItem('diaryEntries', JSON.stringify(localEntries));
+                    diaryEntries.push(entry);
+                    updateDiary();
+                    updateActivityFeed();
+                } else {
+                    const ref = database.ref('slamBook/diary');
+                    const newEntryRef = ref.push();
+                    await newEntryRef.set(entry);
+                    console.log('Diary entry added:', entry, 'Path:', `slamBook/diary/${newEntryRef.key}`);
+                }
+
+                document.getElementById('diaryTitle').value = '';
+                document.getElementById('diaryContent').value = '';
+                document.getElementById('diaryPhoto').value = '';
+                selectedMood = null;
+                document.querySelectorAll('.mood-button').forEach(btn => btn.classList.remove('selected'));
+                errorEl.classList.add('hidden');
+
+                triggerStrawberrySurprise();
+                showToast('Diary entry saved! 📔');
+                showDashboard();
+            } catch (error) {
+                console.error('Add diary error:', error);
+                errorEl.textContent = `Failed to save diary entry: ${error.message}`;
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        async function submitComment(entryId) {
+            const commentText = document.getElementById(`comment-${entryId}`).value;
+            if (!commentText) return;
+
+            try {
+                if (!database) {
+                    throw new Error('Database not initialized.');
+                }
+                const comment = {
+                    text: commentText,
+                    username,
+                    createdAt: Date.now()
+                };
+                const ref = database.ref(`slamBook/entries/${entryId}/comments`);
+                const newCommentRef = ref.push();
+                await newCommentRef.set(comment);
+                console.log('Comment added:', comment, 'Path:', `slamBook/entries/${entryId}/comments/${newCommentRef.key}`);
+                document.getElementById(`comment-${entryId}`).value = '';
+                showToast('Comment added! 💬');
+            } catch (error) {
+                console.error('Add comment error:', error);
+                alert('Failed to add comment: ' + error.message);
+            }
+        }
+
+        function editEntry(id) {
+            const entry = entries.find(e => e.id === id);
+            if (!entry) return;
+
+            // Clear existing Save Changes button
+            const existingSaveButton = document.querySelector('#entryForm button[onclick^="saveEditedEntry"]');
+            if (existingSaveButton) existingSaveButton.remove();
+
+            document.getElementById('prompt').value = entry.prompt;
+            document.getElementById('entryAnswer').value = entry.answer;
+            const saveButton = document.createElement('button');
+            saveButton.textContent = 'Save Changes';
+            saveButton.onclick = () => saveEditedEntry(id);
+            document.getElementById('entryForm').appendChild(saveButton);
+            showEntryForm();
+        }
+
+        async function saveEditedEntry(id) {
+            const prompt = document.getElementById('prompt').value;
+            const answer = document.getElementById('entryAnswer').value;
+            const photo = document.getElementById('entryPhoto').files[0];
+            const errorEl = document.getElementById('formError');
+
+            if (!prompt || !answer) {
+                errorEl.textContent = 'Please select a prompt and write an answer, love! 🍓💕';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                let photoUrl = entries.find(e => e.id === id).photoUrl;
+                if (photo) {
+                    photoUrl = await compressImage(photo);
+                    console.log('Image compressed, length:', photoUrl.length);
+                }
+
+                const updatedEntry = {
+                    prompt,
+                    answer,
+                    photoUrl,
+                    username,
+                    createdAt: entries.find(e => e.id === id).createdAt,
+                    editedAt: Date.now()
+                };
+
+                if (!database) {
+                    throw new Error('Database not initialized.');
+                }
+                await database.ref(`slamBook/entries/${id}`).set(updatedEntry);
+                console.log('Entry updated:', updatedEntry, 'Path:', `slamBook/entries/${id}`);
+
+                document.getElementById('prompt').value = '';
+                document.getElementById('entryAnswer').value = '';
+                document.getElementById('entryPhoto').value = '';
+                errorEl.classList.add('hidden');
+
+                triggerStrawberrySurprise();
+                showToast('Entry updated! 📖');
+                showDashboard();
+            } catch (error) {
+                console.error('Edit entry error:', error);
+                errorEl.textContent = `Failed to update entry: ${error.message}`;
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function editDiary(id) {
+            const entry = diaryEntries.find(e => e.id === id);
+            if (!entry) return;
+
+            // Clear existing Save Changes button
+            const existingSaveButton = document.querySelector('#diaryForm button[onclick^="saveEditedDiary"]');
+            if (existingSaveButton) existingSaveButton.remove();
+
+            document.getElementById('diaryTitle').value = entry.title || '';
+            document.getElementById('diaryContent').value = entry.content || '';
+            selectedMood = entry.mood;
+            document.querySelectorAll('.mood-button').forEach(btn => {
+                btn.classList.toggle('selected', btn.dataset.mood === entry.mood);
+            });
+            const saveButton = document.createElement('button');
+            saveButton.textContent = 'Save Changes';
+            saveButton.onclick = () => saveEditedDiary(id);
+            document.getElementById('diaryForm').appendChild(saveButton);
+            showDiaryForm();
+        }
+
+        async function saveEditedDiary(id) {
+            const title = document.getElementById('diaryTitle').value.trim();
+            const content = document.getElementById('diaryContent').value.trim();
+            const photo = document.getElementById('diaryPhoto').files[0];
+            const errorEl = document.getElementById('diaryError');
+
+            if (!title || !content || !selectedMood) {
+                errorEl.textContent = 'Please add a title, content, and select a mood, love! 🍓💕';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                let photoUrl = diaryEntries.find(e => e.id === id).photoUrl;
+                if (photo) {
+                    photoUrl = await compressImage(photo);
+                    console.log('Image compressed, length:', photoUrl.length);
+                }
+
+                const updatedDiary = {
+                    title: title || 'Untitled',
+                    content: content || 'No content',
+                    photoUrl,
+                    mood: selectedMood,
+                    username,
+                    createdAt: diaryEntries.find(e => e.id === id).createdAt,
+                    editedAt: Date.now()
+                };
+
+                if (!database) {
+                    console.warn('Database not available. Updating localStorage.');
+                    const localEntries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+                    const index = localEntries.findIndex(e => e.id === id);
+                    if (index !== -1) {
+                        localEntries[index] = { ...updatedDiary, id };
+                    }
+                    localStorage.setItem('diaryEntries', JSON.stringify(localEntries));
+                    diaryEntries = diaryEntries.map(e => e.id === id ? updatedDiary : e);
+                    updateDiary();
+                } else {
+                    await database.ref(`slamBook/diary/${id}`).set(updatedDiary);
+                    console.log('Diary entry updated:', updatedDiary, 'Path:', `slamBook/diary/${id}`);
+                }
+
+                document.getElementById('diaryTitle').value = '';
+                document.getElementById('diaryContent').value = '';
+                document.getElementById('diaryPhoto').value = '';
+                selectedMood = null;
+                document.querySelectorAll('.mood-button').forEach(btn => btn.classList.remove('selected'));
+                errorEl.classList.add('hidden');
+
+                triggerStrawberrySurprise();
+                showToast('Diary entry updated! 📔');
+                showDashboard();
+            } catch (error) {
+                console.error('Edit diary error:', error);
+                errorEl.textContent = `Failed to update diary entry: ${error.message}`;
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function triggerStrawberrySurprise() {
+            for (let i = 0; i < 10; i++) {
+                const strawberry = document.createElement('div');
+                strawberry.className = 'strawberry';
+                strawberry.innerText = '🍓';
+                strawberry.style.position = 'absolute';
+                strawberry.style.left = Math.random() * 100 + 'vw';
+                strawberry.style.top = '-50px';
+                strawberry.style.animation = 'strawberryFall 3s ease';
+                document.body.appendChild(strawberry);
+                setTimeout(() => strawberry.remove(), 3000);
+            }
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function showDashboard() {
+            document.getElementById('diaryForm').classList.add('hidden');
+            document.getElementById('entryForm').classList.add('hidden');
+            document.getElementById('diaryPage').classList.add('hidden');
+            document.getElementById('entriesPage').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            initDashboard();
+        }
+
+        function showDiaryForm() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('diaryForm').classList.remove('hidden');
+        }
+
+        function showEntryForm() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('entryForm').classList.remove('hidden');
+            populatePromptDropdown();
+        }
+
+        function showDiary() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('diaryPage').classList.remove('hidden');
+            updateDiary();
+        }
+
+        function showEntries() {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('entriesPage').classList.remove('hidden');
+            updateEntries();
+        }
+
+        // Initialize Event Listeners
+        function initApp() {
+            console.log('Initializing app...');
+            // Login button
+            const loginButton = document.getElementById('loginButton');
+            if (loginButton) {
+                loginButton.addEventListener('click', login);
+                console.log('Login button listener added');
+            } else {
+                console.error('Login button not found');
+            }
+            // Mood buttons
+            document.querySelectorAll('.mood-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedMood = btn.dataset.mood;
+                    document.querySelectorAll('.mood-button').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                });
+            });
+            // Search and sort listeners
+            const diarySearch = document.getElementById('diarySearch');
+            const diarySort = document.getElementById('diarySort');
+            const entrySearch = document.getElementById('entrySearch');
+            const entrySort = document.getElementById('entrySort');
+            if (diarySearch) diarySearch.addEventListener('input', updateDiary);
+            if (diarySort) diarySort.addEventListener('change', updateDiary);
+            if (entrySearch) entrySearch.addEventListener('input', updateEntries);
+            if (entrySort) entrySort.addEventListener('change', updateEntries);
+            populatePromptDropdown();
+        }
+
+        // Firebase Initialization
+         const firebaseConfig = {
+            apiKey: "AIzaSyCNNUNYrIrWSkYZy2u-uotWe-FvkrEwTM0",
+            authDomain: "sanayagrievanceportal.firebaseapp.com",
+            databaseURL: "https://sanayagrievanceportal-default-rtdb.firebaseio.com",
+            projectId: "sanayagrievanceportal",
+            storageBucket: "sanayagrievanceportal.firebasestorage.app",
+            messagingSenderId: "983089657479",
+            appId: "1:983089657479:web:5986b9ba702affa8e3aa22"
+        };
+
+        try {
+            if (typeof firebase === 'undefined') {
+                throw new Error('Firebase SDK not loaded.');
+            }
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            console.log('Firebase initialized successfully:', {
+                databaseAvailable: !!database,
+                databaseURL: firebaseConfig.databaseURL
+            });
+            initApp();
+        } catch (error) {
+            console.error('Firebase initialization failed:', {
+                message: error.message,
+                stack: error.stack
+            });
+            document.getElementById('loginPage').innerHTML += `<p class="error">Failed to initialize Firebase: ${error.message}. Entries will be saved locally.</p>`;
+            initApp();
+        }
+    </script>
+</body>
+</html>
